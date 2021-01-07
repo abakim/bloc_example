@@ -1,16 +1,26 @@
-# bloc_example
+# Bloc App Example
+## Description
+Bloc Flutter App Example aplying bloc pattern with flutter_bloc: 6.1.1 and bloc: 6.1.1 packages
 
-A new Flutter project.
+--------------------------------
 
-## Getting Started
+## Author
+* [Emiliano Kalafatic](https://github.com/abakim)
 
-This project is a starting point for a Flutter application.
+## Contact
+ * Emiliano: emiliano.kalafatic@gmail.com
+ 
+--------------------------------
 
-A few resources to get you started if this is your first Flutter project:
+## Social Network
+* [linkedin Emiliano](https://www.linkedin.com/in/emiliano-kalafatic/)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+--------------------------------
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## License
+
+<pre>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licencia Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />Esta obra está bajo una <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>. 
+
+<pre>
+
