@@ -1,6 +1,6 @@
 # Bloc App Example
 ## Description
-Bloc Flutter App Example aplying bloc pattern with flutter_bloc: 6.1.1 and bloc: 6.1.1 packages
+Bloc Flutter App Example with explanations, developing flutter_bloc and bloc packages by Felix Angelov manually, using HenryCode tutorials (https://youtu.be/vY4KmVqXEGE).
 
 --------------------------------
 
