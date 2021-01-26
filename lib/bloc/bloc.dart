@@ -1,20 +1,80 @@
-/* 
-<< Clase abstracta para tener un bloc en común a todos los blocs >>
-*/
+import 'package:rxdart/rxdart.dart';
+import 'package:meta/meta.dart';
+import 'transition.dart';
+import 'bloc_supervisor.dart';
 
-// Para colocar parámetros genéricos en Dart, se usan los símbolos de menor y mayor (<>), también llamados angle brackets
-// Entonces es posible llamar los datos del tipo que querramos, en este caso eventos y estados.
-abstract class Bloc<Event, State> {}
+abstract class Bloc<Event, State> {
+  final PublishSubject<Event> _eventSubject = PublishSubject<Event>();
+  BehaviorSubject<State> _stateSubject;
 
-/*
-  Recordar que si se extiende de una clase principal se extiende de las subclases:
-  
-  Class A{}
-   
-  Class B extends A{}
+  State get initialState;
 
-  Class C extends A{}
+  State get currentState => _stateSubject.value;
 
-  Class MyBloc2 extends Bloc<A,int>{}  //--> se puede usar como "eventos" o parámetro de entrada a las clases A,B y C
-*/
-class MyBloc extends Bloc <String, int> {}
+  Stream<State> get state => _stateSubject.stream;
+
+  Bloc() {
+    _stateSubject = BehaviorSubject<State>.seeded(initialState);
+    _bindStateSubject();
+  }
+
+  @mustCallSuper
+  void dispose() {
+    _eventSubject.close();
+    _stateSubject.close();
+  }
+
+  void onTransition(Transition<Event, State> transition) => null;
+
+  void onError(Object error, StackTrace stacktrace) => null;
+
+  void onEvent(Event event) => null;
+
+  void dispatch(Event event) {
+    try {
+      BlocSupervisor.delegate.onEvent(this, event);
+      onEvent(event);
+      _eventSubject.sink.add(event);
+    } catch (error) {
+      _handleError(error);
+    }
+  }
+
+  Stream<State> transform(
+    Stream<Event> events,
+    Stream<State> next(Event event),
+  ) {
+    return events.asyncExpand(next);
+  }
+
+  Stream<State> mapEventToState(Event event);
+
+  void _bindStateSubject() {
+    Event currentEvent;
+
+    transform(
+      _eventSubject,
+      (Event event) {
+        currentEvent = event;
+        return mapEventToState(currentEvent).handleError(_handleError);
+      },
+    ).forEach(
+      (State nextState) {
+        if (currentState == nextState || _stateSubject.isClosed) return;
+        final transition = Transition(
+          currentState: currentState,
+          event: currentEvent,
+          nextState: nextState,
+        );
+        BlocSupervisor.delegate.onTransition(this, transition);
+        onTransition(transition);
+        _stateSubject.sink.add(nextState);
+      },
+    );
+  }
+
+  void _handleError(Object error, [StackTrace stacktrace]) {
+    BlocSupervisor.delegate.onError(this, error, stacktrace);
+    onError(error, stacktrace);
+  }
+}
