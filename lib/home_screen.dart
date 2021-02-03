@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bloc Example)'),
+        title: Text('Bloc Example hola)'),
       ),
       body: ListView(
         children: <Widget>[
